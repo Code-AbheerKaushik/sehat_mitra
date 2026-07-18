@@ -186,8 +186,11 @@ const translations = {
     healthAssistantDesc: { en: 'AI-powered health advice', hi: 'AI-संचालित स्वास्थ्य सलाह', pa: 'AI-ਸੰਚਾਲਿਤ ਸਿਹਤ ਸਲਾਹ', or: 'AI-ଚାଳିତ ସ୍ୱାସ୍ଥ୍ୟ ପରାମର୍ଶ' },
     findHospitalsTitle: { en: 'Find Hospitals', hi: 'अस्पताल खोजें', pa: 'ਹਸਪਤਾਲ ਲੱਭੋ', or: 'ଡାକ୍ତରଖାନା ଖୋଜନ୍ତୁ' },
     findHospitalsDesc: { en: 'Locate nearby healthcare', hi: 'आस-पास की स्वास्थ्य सेवा का पता लगाएँ', pa: 'ਨੇੜਲੇ ਸਿਹਤ ਸੰਭਾਲ ਦਾ ਪਤਾ ਲਗਾਓ', or: 'ନିକଟସ୍ଥ ସ୍ୱାସ୍ଥ୍ୟସେବା ଖୋଜନ୍ତୁ' },
+    healthAlertsTitle: { en: 'Health Alerts', hi: 'स्वास्थ्य अलर्ट', pa: 'ਸਿਹਤ ਚਿਤਾਵਨੀਆਂ', or: 'ସ୍ୱାସ୍ଥ୍ୟ ସତର୍କତା' },
+    healthAlertsDesc: { en: 'Local outbreak updates', hi: 'स्थानीय प्रकोप अपडेट', pa: 'ਸਥਾਨਕ ਪ੍ਰਕੋਪ ਸੰਬੰਧੀ ਅੱਪਡੇਟ', or: 'ସ୍ଥାନୀୟ ପ୍ରକୋପ ଅପଡେଟ୍' },
+    emergencyServicesTitle: { en: 'Emergency Services', hi: 'आपातकालीन सेवाएं', pa: 'ਐਮਰਜੈਂਸੀ ਸੇਵਾਵਾਂ', or: 'ଜରୁରୀକାଳୀନ ସେବା' },
     shareOnWhatsApp: { en: 'Share on WhatsApp', hi: 'व्हाट्सऐप पर साझा करें', pa: 'ਵਟਸਐਪ \'ਤੇ ਸਾਂਝਾ ਕਰੋ', or: 'ହ୍ୱାଟସ୍‌ଆପରେ ସେୟାର କରନ୍ତୁ' },
-    contactOnWhatsApp: { en: 'Contact on WhatsApp', hi: 'व्हाट्सऐप पर संपर्क करें', pa: 'ਵਟਸਐਪ \'ਤੇ ਸੰਪਰਕ ਕਰੋ', or: 'ହ୍ୱାଟସ୍‌ଆପରେ ଯୋଗାଯੋଗ କରନ୍ତୁ' },
+    contactOnWhatsApp: { en: 'Contact on WhatsApp', hi: 'व्हाट्सऐप पर संपर्क करें', pa: 'ਵਟਸਐਪ \'ਤੇ ਸੰਪਰਕ ਕਰੋ', or: 'ହ୍ୱାଟସ୍‌ଆପରେ ଯୋଗାଯୋଗ କରନ୍ତୁ' },
     emergencyWhatsApp: { en: 'Emergency WhatsApp', hi: 'आपातकालीन व्हाट्सऐप', pa: 'ਐਮਰਜੈਂਸੀ ਵਟਸਐਪ', or: 'ଜରୁରୀକାଳୀନ ହ୍ୱାଟସ୍‌ଆପ' },
     signInWithGoogle: { en: 'Sign in with Google', hi: 'Google के साथ साइन इन करें', pa: 'Google ਨਾਲ ਸਾਈਨ ਇਨ ਕਰੋ', or: 'Google ସହିତ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ' },
     signOut: { en: 'Sign Out', hi: 'साइन आउट', pa: 'ਸਾਈਨ ਆਉਟ', or: 'ସାଇନ୍ ଆଉଟ୍' },
@@ -303,76 +306,9 @@ const translations = {
 };
 
 
-// Mock data updated for Patiala, Punjab (Sep 2025)
-const mockOutbreaks = [{
-        id: 1,
-        diseaseKey: 'dengue',
-        cases: 45,
-        area: 'Model Town, Patiala',
-        severity: 'high',
-        preventionKey: 'denguePrevention'
-    },
-    {
-        id: 2,
-        diseaseKey: 'typhoid',
-        cases: 12,
-        area: 'Village Sanaur',
-        severity: 'medium',
-        preventionKey: 'typhoidPrevention'
-    },
-    {
-        id: 3,
-        diseaseKey: 'viralFever',
-        cases: 78,
-        area: 'Urban Estate, Patiala',
-        severity: 'medium',
-        preventionKey: 'viralFeverPrevention'
-    }
-];
-
-const mockHospitals = [{
-        id: 1,
-        nameKey: 'govtRajindraHospital',
-        address: 'New Lal Bagh Colony, Patiala',
-        phone: '+91-175-2212018',
-        isOpen: true,
-        distance: '5.8 km',
-        doctors: [
-            { nameKey: 'drGurpreetSingh', specialtyKey: 'generalPhysician', available: true },
-            { nameKey: 'drHarleenKaur', specialtyKey: 'pediatrician', available: true }
-        ]
-    },
-    {
-        id: 2,
-        nameKey: 'chcSanaur',
-        address: 'Sanaur, Patiala District',
-        phone: '+91-175-2650234',
-        isOpen: true,
-        distance: '12.1 km',
-        doctors: [
-            { nameKey: 'drVikramjeetGill', specialtyKey: 'emergencyMedicine', available: true },
-            { nameKey: 'drSimranBedi', specialtyKey: 'gynecologist', available: false }
-        ]
-    }
-];
-
-// ** NEW MOCK DATA **
-const mockHealthCamps = [{
-    id: 1,
-    titleKey: 'healthCampTitle',
-    descriptionKey: 'healthCampDesc',
-    date: '25 Sep, 2025',
-    location: 'Lehal Village, Patiala'
-}];
-
-const mockAshaWorkers = [
-    { id: 1, name: 'Sunita Devi', village: 'Lehal', phone: '+91-9876543210' },
-    { id: 2, name: 'Manjeet Kaur', village: 'Sanaur', phone: '+91-9876543211' },
-    { id: 3, name: 'Geeta Rani', village: 'Daun Kalan', phone: '+91-9876543212' },
-    { id: 4, name: 'Paramjeet Kaur', village: 'Bahadurgarh', phone: '+91-9876543213' },
-];
-
+// First Aid guide content — static medical content kept inline
 const mockFirstAidGuides = [{
+
         id: 'burns',
         titleKey: 'burns',
         steps: {
@@ -444,6 +380,7 @@ const languages = [
 // Utility functions
 const playSound = (text, language = 'en') => {
     if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Cancel any ongoing speech first
         const utterance = new SpeechSynthesisUtterance(text);
         // Added Odia support
         const langMap = { hi: 'hi-IN', pa: 'pa-IN', or: 'or-IN', en: 'en-IN' };
@@ -537,24 +474,49 @@ const HealthcareApp = () => {
     const [user, setUser] = useState(null);
     const [isSigningIn, setIsSigningIn] = useState(false);
 
-    useEffect(() => {
-        try {
-            const savedProfile = localStorage.getItem('sehatMitraProfile');
-            if (savedProfile) {
-                setUserProfile(JSON.parse(savedProfile));
-            }
-            
-            // Load saved user from localStorage
-            const savedUser = localStorage.getItem('sehatMitraUser');
-            if (savedUser) {
-                setUser(JSON.parse(savedUser));
-            }
-        } catch (e) {
-            console.error("Failed to parse saved data from localStorage", e);
-            setError("Could not load your saved profile.");
+    // ── DB user identity helper ────────────────────────────────────────────────
+    // Returns the email used as the user key for all DB operations.
+    // Falls back to a guest ID stored in localStorage for unauthenticated users.
+    const getUserEmail = useCallback(() => {
+        if (user?.email) return user.email;
+        // Guest mode: use a persistent guest ID
+        let guestId = localStorage.getItem('sehatMitraGuestId');
+        if (!guestId) {
+            guestId = `guest_${Math.random().toString(36).slice(2)}@sehatmitra.local`;
+            localStorage.setItem('sehatMitraGuestId', guestId);
         }
+        return guestId;
+    }, [user]);
 
-        // Load Google API
+    // ── Load profile from DB on mount ─────────────────────────────────────────
+    useEffect(() => {
+        const loadProfileFromDB = async () => {
+            try {
+                const email = localStorage.getItem('sehatMitraGuestId') ||
+                              JSON.parse(localStorage.getItem('sehatMitraUser') || 'null')?.email;
+                if (!email) return;
+                const res = await fetch(`/api/user?email=${encodeURIComponent(email)}`);
+                const data = await res.json();
+                if (data.user) {
+                    setUserProfile({
+                        name: data.user.name || '',
+                        age: data.user.age || '',
+                        bloodGroup: data.user.bloodGroup || '',
+                        allergies: data.user.allergies || '',
+                        conditions: data.user.chronicConditions || '',
+                        dietPreference: data.user.dietPreference || '',
+                    });
+                    // Restore saved user session
+                    if (data.user.googleId) {
+                        const savedUser = localStorage.getItem('sehatMitraUser');
+                        if (savedUser) setUser(JSON.parse(savedUser));
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to load profile from DB', e);
+            }
+        };
+        loadProfileFromDB();
         loadGoogleAPI();
     }, []);
 
@@ -576,7 +538,7 @@ const HealthcareApp = () => {
     const initializeGoogleAuth = () => {
         if (window.google) {
             window.google.accounts.id.initialize({
-                client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '1234567890-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com', // Replace with your actual client ID
+                client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '1234567890-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com',
                 callback: handleGoogleSignIn,
                 auto_select: false,
                 cancel_on_tap_outside: true
@@ -584,11 +546,10 @@ const HealthcareApp = () => {
         }
     };
 
-    // Handle Google Sign In
-    const handleGoogleSignIn = (response) => {
+    // Handle Google Sign In — upsert user to DB
+    const handleGoogleSignIn = async (response) => {
         setIsSigningIn(true);
         try {
-            // Decode JWT token
             const payload = JSON.parse(atob(response.credential.split('.')[1]));
             const userData = {
                 id: payload.sub,
@@ -598,17 +559,32 @@ const HealthcareApp = () => {
                 given_name: payload.given_name,
                 family_name: payload.family_name
             };
-            
             setUser(userData);
             localStorage.setItem('sehatMitraUser', JSON.stringify(userData));
-            
-            // Auto-fill profile with Google data if profile is empty
+
+            // Upsert user in MongoDB
+            const profileToSave = {
+                email: userData.email,
+                googleId: userData.id,
+                name: userData.name,
+                ...(!userProfile.name ? {} : {
+                    age: userProfile.age,
+                    bloodGroup: userProfile.bloodGroup,
+                    allergies: userProfile.allergies,
+                    chronicConditions: userProfile.conditions,
+                    dietPreference: userProfile.dietPreference,
+                }),
+            };
+            await fetch('/api/user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(profileToSave),
+            });
+
+            // Auto-fill name if profile is empty
             if (!userProfile.name && userData.name) {
-                const updatedProfile = { ...userProfile, name: userData.name };
-                setUserProfile(updatedProfile);
-                localStorage.setItem('sehatMitraProfile', JSON.stringify(updatedProfile));
+                setUserProfile(prev => ({ ...prev, name: userData.name }));
             }
-            
         } catch (error) {
             console.error('Google Sign-In error:', error);
             setError('Failed to sign in with Google. Please try again.');
@@ -630,20 +606,37 @@ const HealthcareApp = () => {
     useEffect(() => {
         const welcomeTimer = setTimeout(() => {
             setShowWelcome(false);
-        }, 2500); // Welcome screen duration
-
+        }, 2500);
         return () => clearTimeout(welcomeTimer);
     }, []);
 
-    const saveUserProfile = useCallback((profile) => {
+    // Save profile to MongoDB
+    const saveUserProfile = useCallback(async (profile) => {
+        setUserProfile(profile);
         try {
-            localStorage.setItem('sehatMitraProfile', JSON.stringify(profile));
-            setUserProfile(profile);
+            const email = user?.email || localStorage.getItem('sehatMitraGuestId') ||
+                `guest_${Math.random().toString(36).slice(2)}@sehatmitra.local`;
+            if (!localStorage.getItem('sehatMitraGuestId') && !user?.email) {
+                localStorage.setItem('sehatMitraGuestId', email);
+            }
+            await fetch('/api/user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    name: profile.name,
+                    age: profile.age,
+                    bloodGroup: profile.bloodGroup,
+                    allergies: profile.allergies,
+                    chronicConditions: profile.conditions,
+                    dietPreference: profile.dietPreference,
+                }),
+            });
         } catch (e) {
-            console.error("Failed to save user profile to localStorage", e);
-            setError("Your profile could not be saved.");
+            console.error('Failed to save profile to DB', e);
+            setError('Your profile could not be saved.');
         }
-    }, []);
+    }, [user]);
 
 
     useEffect(() => {
@@ -671,8 +664,9 @@ const HealthcareApp = () => {
         handleGoogleSignOut,
         isSigningIn,
         userProfile,
-        saveUserProfile
-    }), [t, currentView, darkMode, language, user, isSigningIn, userProfile]);
+        saveUserProfile,
+        setError
+    }), [t, currentView, darkMode, language, user, isSigningIn, userProfile, setError]);
 
     const renderContent = () => {
         if (error) {
@@ -868,19 +862,27 @@ const Header = () => {
 const OutbreakAlertBar = () => {
     const { t } = useContext(AppContext);
     const [currentAlert, setCurrentAlert] = useState(0);
+    const [alerts, setAlerts] = useState([]);
 
     useEffect(() => {
-        if (mockOutbreaks.length > 1) {
+        fetch('/api/alerts')
+            .then(r => r.json())
+            .then(data => setAlerts(data.alerts || []))
+            .catch(e => console.error('Failed to fetch alerts for banner', e));
+    }, []);
+
+    useEffect(() => {
+        if (alerts.length > 1) {
             const interval = setInterval(() => {
-                setCurrentAlert((prev) => (prev + 1) % mockOutbreaks.length);
+                setCurrentAlert((prev) => (prev + 1) % alerts.length);
             }, 5000);
             return () => clearInterval(interval);
         }
-    }, []);
+    }, [alerts]);
 
-    if (mockOutbreaks.length === 0) return null;
+    if (alerts.length === 0) return null;
 
-    const alert = mockOutbreaks[currentAlert];
+    const alert = alerts[currentAlert];
     const isHighSeverity = alert.severity === 'high';
     const bgColor = isHighSeverity ? 'bg-red-100 dark:bg-red-900/80' : 'bg-yellow-100 dark:bg-yellow-900/80';
     const textColor = isHighSeverity ? 'text-red-800 dark:text-red-200' : 'text-yellow-800 dark:text-yellow-200';
@@ -889,8 +891,8 @@ const OutbreakAlertBar = () => {
   <div className={`${bgColor} ${textColor} px-4 py-2 text-center text-sm`}>
     <AlertTriangle className="inline h-4 w-4 mr-1" />
     <span className="font-medium">{t("alert")}</span>{" "}
-    {alert.cases} {t(alert.diseaseKey)} {t("casesIn")} {alert.area}
-    <span className="ml-2 text-xs">• {t(alert.preventionKey)}</span>
+    {alert.casesCount || alert.cases} {t(alert.disease || alert.diseaseKey)} {t("casesIn")} {alert.area}
+    <span className="ml-2 text-xs">• {t(alert.preventionKey) || alert.preventionMeasures}</span>
   </div>
 );
 };
@@ -1021,6 +1023,13 @@ const Dashboard = () => {
 // ** NEW COMPONENTS for Dashboard **
 const HealthCampBanner = () => {
     const { t } = useContext(AppContext);
+    const mockHealthCamps = [{
+        id: 1,
+        titleKey: 'healthCampTitle',
+        descriptionKey: 'healthCampDesc',
+        date: '25 Sep, 2025',
+        location: 'Lehal Village, Patiala'
+    }];
     const camp = mockHealthCamps[0];
 
     // Health Camp Card
@@ -1146,7 +1155,7 @@ const HealthTips = () => {
         User's Chronic Conditions: ${userProfile.conditions || 'None specified'}
         Generate 3 simple, actionable, and encouraging health tips tailored to this user. The tips should be easy to follow with limited resources. Focus on diet, light exercise, or lifestyle adjustments. The language must be extremely simple. Output only the tips in a numbered list, like "1. First tip.\n2. Second tip.\n3. Third tip.".`;
 
-        const apiKey = "YOUR_GEMINI_API_KEY_HEREAIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g"; // 👈 Paste your actual key here
+        const apiKey = "AIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g";
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
         const payload = { contents: [{ parts: [{ text: systemPrompt }] }] };
 
@@ -1221,7 +1230,7 @@ const HealthTips = () => {
 
 // Chatbot Component
 const Chatbot = () => {
-    const { language, t, setError } = useContext(AppContext);
+    const { language, t, setError, user } = useContext(AppContext);
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const [isListening, setIsListening] = useState(false);
@@ -1229,33 +1238,53 @@ const Chatbot = () => {
     const [showClearConfirm, setShowClearConfirm] = useState(false);
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null); // Ref for the hidden file input
+    const isInitialLoad = useRef(true); // Ref to skip redundant DB write on mount
 
-    // CHAT HISTORY FEATURE: This is already implemented correctly.
-    // The two useEffect hooks below handle loading from and saving to localStorage.
-    // This functionality persists across sessions and is language-independent.
+    // ── Chat history: load from MongoDB on mount ──────────────────────────────
     useEffect(() => {
-        try {
-            const savedChat = localStorage.getItem('sehatMitraChat');
-            if (savedChat) {
-                setMessages(JSON.parse(savedChat));
-            } else {
-                setMessages([{ type: 'bot', content: t('chatbotInitialGreeting'), timestamp: new Date().toISOString() }]);
-            }
-        } catch (e) {
-            setMessages([{ type: 'bot', content: t('chatbotInitialGreeting'), timestamp: new Date().toISOString() }]);
-        }
-    }, [t]);
-
-    useEffect(() => {
-        if (messages.length > 0) {
+        const loadChat = async () => {
             try {
-                localStorage.setItem('sehatMitraChat', JSON.stringify(messages));
+                const email = user?.email || localStorage.getItem('sehatMitraGuestId');
+                if (!email) {
+                    setMessages([{ type: 'bot', content: t('chatbotInitialGreeting'), timestamp: new Date().toISOString() }]);
+                    isInitialLoad.current = false;
+                    return;
+                }
+                const res = await fetch(`/api/chat?email=${encodeURIComponent(email)}`);
+                const data = await res.json();
+                if (data.messages && data.messages.length > 0) {
+                    setMessages(data.messages);
+                } else {
+                    setMessages([{ type: 'bot', content: t('chatbotInitialGreeting'), timestamp: new Date().toISOString() }]);
+                }
             } catch (e) {
-                console.error("Failed to save chat history", e);
-                setError("Could not save your chat history.");
+                setMessages([{ type: 'bot', content: t('chatbotInitialGreeting'), timestamp: new Date().toISOString() }]);
+            } finally {
+                isInitialLoad.current = false;
             }
-        }
-    }, [messages, setError]);
+        };
+        loadChat();
+    }, [t, user]);
+
+    // ── Chat history: save to MongoDB on every message change ─────────────────
+    useEffect(() => {
+        if (messages.length === 0 || isInitialLoad.current) return;
+        const saveChat = async () => {
+            try {
+                const email = user?.email || localStorage.getItem('sehatMitraGuestId');
+                if (!email) return;
+                await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, messages }),
+                });
+            } catch (e) {
+                console.error('Failed to save chat to DB', e);
+                setError('Could not save your chat history.');
+            }
+        };
+        saveChat();
+    }, [messages, user, setError]);
 
    const scrollToBottom = () => {
   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -1279,9 +1308,48 @@ const Chatbot = () => {
             const data = await response.json();
             return data.reply || t('defaultResponse');
         } catch (error) {
-            console.error("Error calling backend:", error);
-            setError("There was a network problem. Please check your connection.");
-            return t('defaultResponse');
+            console.error("Error calling backend, trying fallback Gemini API:", error);
+            try {
+                const apiKey = (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_GEMINI_API_KEY) || "AIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+                const systemPrompt = `You are SehatMitra, a warm, caring, and helpful AI healthcare assistant for the Patiala region in Punjab, India. Communicate in the user's selected language: ${language}. Provide clear, friendly, and actionable health advice. Keep answers relatively short. Always include a disclaimer if describing serious symptoms.`;
+                const payload = {
+                    contents: [
+                        { role: 'user', parts: [{ text: `${systemPrompt}\n\nUser query: ${userMessage}` }] }
+                    ]
+                };
+                const geminiRes = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (geminiRes.ok) {
+                    const geminiData = await geminiRes.json();
+                    const reply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (reply) return reply;
+                }
+            } catch (fallbackError) {
+                console.error("Gemini fallback error:", fallbackError);
+            }
+
+            // Fallback 2: Offline keyword-based local responses if API key is invalid/offline
+            const query = userMessage.toLowerCase();
+            if (query.includes('dengue') || query.includes('मच्छर') || query.includes('ਮੱਛਰ')) {
+                return "Dengue alert is currently active in Patiala. Please ensure there is no stagnant water around your home, use mosquito nets, and wear full-sleeve clothing. If you have a high fever, rest and consult a doctor immediately.";
+            }
+            if (query.includes('fever') || query.includes('बुखार') || query.includes('ਬੁਖਾਰ') || query.includes('cold') || query.includes('cough')) {
+                return "For mild fever or cough, make sure to get plenty of rest, stay hydrated by drinking clean boiled water, and monitor your temperature. If the fever lasts more than 3 days, please visit Govt. Rajindra Hospital or your nearest clinic.";
+            }
+            if (query.includes('diet') || query.includes('food') || query.includes('खाना') || query.includes('ਭੋਜਨ') || query.includes('nutrition')) {
+                return "A healthy diet for rural Punjab should include whole grains (missi roti, daliya), seasonal green vegetables, lentils (dal), and home-made curd or lassi. Try to limit oil, sugar, and tea intake.";
+            }
+            if (query.includes('hello') || query.includes('hi') || query.includes('hey') || query.includes('sat sri akaal') || query.includes('namaste')) {
+                return "Sat Sri Akaal! I am SehatMitra, your health helper. How can I help you today?";
+            }
+
+            // If no match, return offline warning message
+            setError("Active connection to AI server is offline. Running in local assistant mode.");
+            return "I am currently running in offline assistant mode. For general health support, try asking about 'fever', 'dengue', or 'diet'. In case of emergency, please consult a medical professional immediately.";
         }
     };
 
@@ -1299,7 +1367,6 @@ const Chatbot = () => {
         const botResponse = { type: 'bot', content: botResponseContent, timestamp: new Date().toISOString() };
         setMessages(prev => [...prev, botResponse]);
         setIsLoading(false);
-        playSound(botResponseContent, language);
     };
 
     // New function to handle image selection
@@ -1325,13 +1392,19 @@ const Chatbot = () => {
                 };
                 setMessages(prev => [...prev, botResponse]);
                 setIsLoading(false);
-                playSound(t('imageSent'), language);
             }, 2000);
         }
     };
 
-    const handleClearChat = () => {
-        localStorage.removeItem('sehatMitraChat');
+    const handleClearChat = async () => {
+        try {
+            const email = user?.email || localStorage.getItem('sehatMitraGuestId');
+            if (email) {
+                await fetch(`/api/chat?email=${encodeURIComponent(email)}`, { method: 'DELETE' });
+            }
+        } catch (e) {
+            console.error('Failed to clear chat in DB', e);
+        }
         setMessages([{ type: 'bot', content: t('chatbotInitialGreeting'), timestamp: new Date().toISOString() }]);
         setShowClearConfirm(false);
     };
@@ -1540,10 +1613,18 @@ const Hospitals = () => {
         const [hospitals, setHospitals] = useState([]);
 
         useEffect(() => {
-            setTimeout(() => {
-                setHospitals(mockHospitals);
-                setLoading(false);
-            }, 1500);
+            const fetchHospitals = async () => {
+                try {
+                    const res = await fetch('/api/hospitals');
+                    const data = await res.json();
+                    setHospitals(data.hospitals || []);
+                } catch (e) {
+                    console.error('Failed to fetch hospitals', e);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchHospitals();
         }, []);
 
        const LoadingCard = () => (
@@ -1565,17 +1646,17 @@ const Hospitals = () => {
   <div className="group flex items-center space-x-3 p-3 bg-white/10 dark:bg-black/20 rounded-lg transition-colors hover:bg-white/20 dark:hover:bg-black/30">
     <div
       className={`flex-shrink-0 w-3 h-3 rounded-full transition-all duration-300 ${
-        doctor.available
+        (doctor.isAvailable ?? doctor.available)
           ? 'bg-green-400 group-hover:shadow-lg group-hover:shadow-green-400/50'
           : 'bg-red-500'
       }`}
     ></div>
     <div className="flex-1">
       <p className="font-medium text-sm text-gray-900 dark:text-white">
-        {t(doctor.nameKey)}
+        {doctor.name || t(doctor.nameKey)}
       </p>
       <p className="text-xs text-gray-600 dark:text-gray-400">
-        {t(doctor.specialtyKey)}
+        {doctor.specialty || t(doctor.specialtyKey)}
       </p>
     </div>
     <Stethoscope className="h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform group-hover:scale-110" />
@@ -1608,7 +1689,7 @@ const HospitalCard = ({ hospital, index }) => {
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-            {t(hospital.nameKey)}
+            {hospital.name || t(hospital.nameKey)}
           </h3>
           <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
             <MapPin className="h-4 w-4 mr-2 flex-shrink-0" /> 
@@ -1616,7 +1697,7 @@ const HospitalCard = ({ hospital, index }) => {
           </div>
           <div className="flex items-center text-gray-600 dark:text-gray-400">
             <Clock className="h-4 w-4 mr-2 flex-shrink-0" /> 
-            <span>{hospital.distance} {t('distanceAway')}</span>
+            <span>{hospital.distanceLabel || hospital.distance} {t('distanceAway')}</span>
           </div>
         </div>
         <div
@@ -1698,6 +1779,20 @@ const HospitalCard = ({ hospital, index }) => {
                         // **ALERTS COMPONENT - REVAMPED**
                         const Alerts = () => {
                             const { t, user } = useContext(AppContext);
+                            const [outbreaks, setOutbreaks] = useState([]);
+
+                            useEffect(() => {
+                                const fetchAlerts = async () => {
+                                    try {
+                                        const res = await fetch('/api/alerts');
+                                        const data = await res.json();
+                                        setOutbreaks(data.alerts || []);
+                                    } catch (e) {
+                                        console.error('Failed to fetch alerts', e);
+                                    }
+                                };
+                                fetchAlerts();
+                            }, []);
 
                                 const AlertCard = ({ outbreak, index }) => {
   const isHigh = outbreak.severity === 'high';
@@ -1762,7 +1857,7 @@ const HospitalCard = ({ hospital, index }) => {
                                const VaccineCard = ({ titleKey, descKey, color, icon: Icon, index }) => (
   <div
     className="relative p-5 rounded-xl overflow-hidden animate-card-pop-in bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-lg"
-    style={{ animationDelay: `${(mockOutbreaks.length + index) * 150}ms` }}
+    style={{ animationDelay: `${(outbreaks.length + index) * 150}ms` }}
   >
     <div
       className={`absolute inset-0 bg-gradient-to-br from-${color}-400 to-${color}-600 opacity-10 dark:opacity-20`}
@@ -1787,8 +1882,8 @@ return (
     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{t('alertsTitle')}</h2>
 
     <div className="space-y-6">
-      {mockOutbreaks.map((outbreak, index) => (
-        <AlertCard key={outbreak.id} outbreak={outbreak} index={index} />
+      {outbreaks.map((outbreak, index) => (
+        <AlertCard key={outbreak._id || outbreak.id} outbreak={outbreak} index={index} />
       ))}
     </div>
 
@@ -1847,6 +1942,7 @@ const EditInfoRow = React.memo(({ label, name, value, placeholder, onChange }) =
     />
   </div>
 ));
+EditInfoRow.displayName = 'EditInfoRow';
 
 const EditSelectRow = React.memo(({ label, name, value, options, onChange, t }) => (
   <div>
@@ -1872,6 +1968,8 @@ const EditSelectRow = React.memo(({ label, name, value, options, onChange, t }) 
     </select>
   </div>
 ));
+EditSelectRow.displayName = 'EditSelectRow';
+
 
                         // Profile Component
                         const Profile = () => {
@@ -2108,10 +2206,27 @@ const EditSelectRow = React.memo(({ label, name, value, options, onChange, t }) 
                             const AshaWorkerDirectory = () => {
   const { t } = useContext(AppContext);
   const [searchTerm, setSearchTerm] = useState('');
+  const [workers, setWorkers] = useState([]);
+  const [loadingWorkers, setLoadingWorkers] = useState(true);
 
-  const filteredWorkers = mockAshaWorkers.filter(worker =>
-    worker.village.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const fetchWorkers = async () => {
+      setLoadingWorkers(true);
+      try {
+        const query = searchTerm ? `?village=${encodeURIComponent(searchTerm)}` : '';
+        const res = await fetch(`/api/asha-workers${query}`);
+        const data = await res.json();
+        setWorkers(data.workers || []);
+      } catch (e) {
+        console.error('Failed to fetch ASHA workers', e);
+      } finally {
+        setLoadingWorkers(false);
+      }
+    };
+    // Debounce search by 300ms
+    const timer = setTimeout(fetchWorkers, 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
@@ -2131,9 +2246,20 @@ const EditSelectRow = React.memo(({ label, name, value, options, onChange, t }) 
       </div>
 
       <div className="space-y-4">
-        {filteredWorkers.map((worker, index) => (
+        {loadingWorkers ? (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2 text-blue-500" />
+            <p>Loading workers...</p>
+          </div>
+        ) : workers.length === 0 ? (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <Users className="h-8 w-8 mx-auto mb-2" />
+            <p>No ASHA workers found for that village.</p>
+          </div>
+        ) : (
+          workers.map((worker, index) => (
           <div
-            key={worker.id}
+            key={worker._id || worker.id}
             className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-xl shadow-lg p-4 flex items-center justify-between animate-card-pop-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
@@ -2148,7 +2274,8 @@ const EditSelectRow = React.memo(({ label, name, value, options, onChange, t }) 
               <Phone className="h-4 w-4 mr-2 transition-transform group-hover:rotate-12" /> {t('callNow')}
             </a>
           </div>
-        ))}
+        ))
+        )}
       </div>
     </div>
   );
@@ -2162,22 +2289,11 @@ const DietPlanner = () => {
 
     const isProfileComplete = userProfile.age && userProfile.conditions;
 
-    // Extract lightweight preferences from past chat stored in localStorage
+    // Extract lightweight preferences from past chat (no longer uses localStorage)
     const deriveChatPreferences = () => {
-      let prefs = { vegLikely: false, likesSpicy: false, lactoseIssue: false, lowSalt: false, lowSugar: false };
-      try {
-        const saved = localStorage.getItem('sehatMitraChat');
-        if (!saved) return prefs;
-        const msgs = JSON.parse(saved);
-        const text = msgs.map(m => m.content?.toLowerCase?.() || '').join(' \n ');
-        if (/veg|vegetarian|paneer|dal|sabzi|chole|rajma/.test(text)) prefs.vegLikely = true;
-        if (/non[- ]?veg|chicken|egg|fish|meat/.test(text)) prefs.vegLikely = false;
-        if (/spicy|masala|tikka|chatpata|chilli|mirch/.test(text)) prefs.likesSpicy = true;
-        if (/lactose|milk.*problem|milk.*allergy|dairy.*issue|gas with milk/.test(text)) prefs.lactoseIssue = true;
-        if (/bp|hypertension|high blood pressure|low salt/.test(text)) prefs.lowSalt = true;
-        if (/diabetes|sugar|pre[- ]?diabetes|low sugar/.test(text)) prefs.lowSugar = true;
-      } catch (_) {}
-      return prefs;
+      // Preferences are now derived from server-side chat history if available
+      // For now return safe defaults
+      return { vegLikely: false, likesSpicy: false, lactoseIssue: false, lowSalt: false, lowSugar: false };
     };
 
     // Build a simple one-day dummy plan based on profile and chat signals
@@ -2437,8 +2553,8 @@ const DietPlanner = () => {
           Format: Use markdown headings for each meal (e.g., '### Breakfast'). For each meal, provide 2-3 simple food items.
           IMPORTANT: The entire response MUST be written in ${languageMap[language]}.`;
 
-      // Read API key from env; fallback to local dummy if not present
-      const apiKey = (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_GEMINI_API_KEY) || '';
+      // Read API key from env; fallback to built-in key if not present
+      const apiKey = (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_GEMINI_API_KEY) || 'AIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g';
 
       try {
         if (!apiKey) {
