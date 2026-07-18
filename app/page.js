@@ -707,9 +707,9 @@ const HealthcareApp = () => {
       }`}
     >
       <div className="aurora-background"></div>
-      <div className="relative bg-gray-50/50 dark:bg-gray-900/50 min-h-screen">
+      <div className="relative bg-gray-50/50 dark:bg-gray-900/50 min-h-screen overflow-hidden">
         <Header />
-        <main className="pb-24">{renderContent()}</main> 
+        <main className="h-[calc(100vh-132px)] overflow-hidden">{renderContent()}</main>
         <Navigation />
       </div>
     </div>
@@ -1456,7 +1456,7 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
     const handleKeyPress = (e) => { if (e.key === 'Enter' && !isLoading) sendMessage(); };
 
     return (
-  <div className="max-w-6xl mx-auto px-4 py-2 h-[calc(100vh-100px)] flex flex-col animate-fade-in">
+  <div className="w-full h-full px-4 py-2 flex flex-col animate-fade-in">
     {/* Header */}
     <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-xl shadow-lg p-4 mb-4">
       <div className="flex items-center justify-between">
