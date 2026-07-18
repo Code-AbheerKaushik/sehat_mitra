@@ -707,9 +707,9 @@ const HealthcareApp = () => {
       }`}
     >
       <div className="aurora-background"></div>
-      <div className="relative bg-gray-50/50 dark:bg-gray-900/50 min-h-screen overflow-hidden">
+      <div className="relative bg-gray-50/50 dark:bg-gray-900/50 h-screen flex flex-col overflow-hidden">
         <Header />
-        <main className="h-[calc(100vh-132px)] overflow-hidden">{renderContent()}</main>
+        <main className="flex-1 min-h-0 overflow-hidden">{renderContent()}</main>
         <Navigation />
       </div>
     </div>
@@ -1456,9 +1456,9 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
     const handleKeyPress = (e) => { if (e.key === 'Enter' && !isLoading) sendMessage(); };
 
     return (
-  <div className="w-full h-full px-4 py-2 flex flex-col animate-fade-in">
-    {/* Header */}
-    <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-xl shadow-lg p-4 mb-4">
+  <div className="w-full h-full flex flex-col animate-fade-in overflow-hidden">
+    {/* Chat Header - fixed within chat section */}
+    <div className="flex-shrink-0 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 px-4 py-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <MessageCircle className="h-8 w-8 text-blue-500 mr-3" />
@@ -1514,9 +1514,10 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
       </div>
     )}
 
-    {/* Chat Window */}
-    <div className="flex-1 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-xl shadow-lg overflow-hidden flex flex-col min-h-0">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+    {/* Chat Window - fills remaining space */}
+    <div className="flex-1 min-h-0 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md flex flex-col overflow-hidden">
+      {/* Scrollable messages area - only this scrolls */}
+      <div className="flex-1 overflow-y-auto min-h-0 px-4 py-4 space-y-3">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -1643,14 +1644,14 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Disclaimer */}
+      {/* Disclaimer strip */}
       <div
-        className="px-4 pb-2 text-xs text-gray-500 dark:text-gray-400 text-center"
+        className="flex-shrink-0 px-4 py-1.5 text-xs text-gray-400 dark:text-gray-500 text-center border-t border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
         dangerouslySetInnerHTML={{ __html: t('chatbotDisclaimer') }}
       />
 
-      {/* Input Area */}
-      <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-600 p-4">
+      {/* Input Area - sticky, always visible above nav */}
+      <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <div className="flex items-center space-x-2">
           <div className="flex-1 relative">
             <input
@@ -1659,7 +1660,7 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={t('chatbotInputPlaceholder')}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm shadow-sm"
             />
           </div>
           {/* New Image Upload Button */}
@@ -2200,13 +2201,13 @@ EditSelectRow.displayName = 'EditSelectRow';
   const navItems = [
     { id: 'dashboard', icon: Home, label: t('navHome') },
     { id: 'chatbot', icon: MessageCircle, label: t('navAssistant') },
-    { id: 'dietPlanner', icon: Salad, label: t('navDietPlan') }, // New Diet Planner Nav Item
+    { id: 'dietPlanner', icon: Salad, label: t('navDietPlan') },
     { id: 'hospitals', icon: Hospital, label: t('navHospitals') },
     { id: 'alerts', icon: Bell, label: t('navAlerts') },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-t border-gray-200/50 dark:border-gray-700/50 z-50">
+    <nav className="flex-shrink-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 z-50">
       <div className="max-w-md mx-auto px-2">
         <div className="flex justify-around py-2">
           {navItems.map((item) => {
