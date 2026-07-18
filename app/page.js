@@ -1456,7 +1456,7 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
     const handleKeyPress = (e) => { if (e.key === 'Enter' && !isLoading) sendMessage(); };
 
     return (
-  <div className="max-w-4xl mx-auto px-4 py-6 h-[calc(100vh-120px)] flex flex-col animate-fade-in">
+  <div className="max-w-6xl mx-auto px-4 py-2 h-[calc(100vh-100px)] flex flex-col animate-fade-in">
     {/* Header */}
     <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-xl shadow-lg p-4 mb-4">
       <div className="flex items-center justify-between">
@@ -1515,8 +1515,8 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
     )}
 
     {/* Chat Window */}
-    <div className="flex-1 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-xl shadow-lg overflow-hidden flex flex-col">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className="flex-1 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-xl shadow-lg overflow-hidden flex flex-col min-h-0">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -1527,7 +1527,7 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
             }`}
           >
             <div
-              className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg shadow-sm ${
+              className={`max-w-sm lg:max-w-2xl px-4 py-3 rounded-xl shadow-sm ${
                 message.type === 'user'
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
@@ -1650,7 +1650,7 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
       />
 
       {/* Input Area */}
-      <div className="border-t border-gray-200 dark:border-gray-600 p-4">
+      <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-600 p-4">
         <div className="flex items-center space-x-2">
           <div className="flex-1 relative">
             <input
