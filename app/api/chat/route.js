@@ -44,14 +44,14 @@ export async function POST(request) {
     const user = await User.findOneAndUpdate(
       { email },
       { $setOnInsert: { email, name: email.split('@')[0] } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
 
     // Upsert chat session
     await ChatSession.findOneAndUpdate(
       { userId: user._id },
       { $set: { messages } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
 
     return Response.json({ success: true }, { status: 200 });

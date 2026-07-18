@@ -8,7 +8,10 @@ const MessageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,
+    default: '',
+  },
+  imageUrl: {
+    type: String,
   },
   timestamp: {
     type: Date,

@@ -1230,12 +1230,13 @@ const HealthTips = () => {
 
 // Chatbot Component
 const Chatbot = () => {
-    const { language, t, setError, user } = useContext(AppContext);
+    const { language, t, setError, user, setCurrentView, userProfile } = useContext(AppContext);
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const [isListening, setIsListening] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showClearConfirm, setShowClearConfirm] = useState(false);
+    const [offlineState, setOfflineState] = useState({ step: null, query: '' });
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null); // Ref for the hidden file input
     const isInitialLoad = useRef(true); // Ref to skip redundant DB write on mount
@@ -1296,6 +1297,18 @@ const Chatbot = () => {
     }, [messages]);
 
     const getBackendResponse = async (userMessage) => {
+        const queryLower = userMessage.toLowerCase();
+        
+        // Handle Offline Triage Flow first if in progress
+        if (offlineState.step === 'awaiting_symptoms') {
+            setOfflineState({ step: null, query: '' });
+            if (queryLower.includes('yes') || queryLower.includes('yeah') || queryLower.includes('yup') || queryLower.includes('हाँ') || queryLower.includes('ਹਾਂ') || queryLower.includes('ha') || queryLower.includes('haa')) {
+                return `⚠️ **High-Risk Alert:** Severe symptoms detected. Please consult a doctor immediately.\n\n* **Govt. Rajindra Hospital** or nearby CHCs: [Action: ViewHospitals]\n* Contact local **ASHA Workers**: [Action: ViewAshaWorkers]`;
+            } else {
+                return `**Care Recommendation:** Since you do not have severe warning signs, you can manage this at home:\n\n* Get plenty of bed rest.\n* Stay hydrated with clean water, coconut water, or ORS.\n* Monitor temperature. If symptoms persist for more than 3 days, consult a physician: [Action: ViewHospitals]`;
+            }
+        }
+
         try {
             const response = await fetch(`https://parker-recipient-rebecca-fan.trycloudflare.com/chat`, {
                 method: "POST",
@@ -1312,16 +1325,39 @@ const Chatbot = () => {
             try {
                 const apiKey = (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_GEMINI_API_KEY) || "AIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-                const systemPrompt = `You are SehatMitra, a warm, caring, and helpful AI healthcare assistant for the Patiala region in Punjab, India. Communicate in the user's selected language: ${language}. Provide clear, friendly, and actionable health advice. Keep answers relatively short. Always include a disclaimer if describing serious symptoms.`;
-                const payload = {
-                    contents: [
-                        { role: 'user', parts: [{ text: `${systemPrompt}\n\nUser query: ${userMessage}` }] }
-                    ]
-                };
+                
+                // Prepend user profile information for personalized responses
+                const profileContext = `User Profile Context (inject this automatically into your logic):
+- Name: ${userProfile?.name || 'Anonymous User'}
+- Age: ${userProfile?.age || 'Not specified'}
+- Chronic Conditions: ${userProfile?.conditions || 'None specified'}
+- Village: ${userProfile?.village || 'Not specified'}`;
+
+                const systemPrompt = `You are SehatMitra, a warm, caring, and helpful AI healthcare assistant for the Patiala region in Punjab, India. 
+Communicate in the user's selected language: ${language}.
+Provide clear, friendly, and actionable health advice. Keep answers relatively short.
+Always include a disclaimer to consult a doctor for serious symptoms.
+
+${profileContext}
+
+If the user is asking for hospital options or medical aid, suggest Govt. Rajindra Hospital or local clinics and output the action tag "[Action: ViewHospitals]" in your message. If they ask about local healthcare support workers, mention ASHA workers and output "[Action: ViewAshaWorkers]".`;
+
+                // Map recent chat history for context-aware multi-turn conversations (last 6 messages)
+                const contents = messages.slice(-6).map(m => ({
+                    role: m.type === 'user' ? 'user' : 'model',
+                    parts: [{ text: m.content || '[Image Sent]' }]
+                }));
+
+                // Append the current user query prefixed with the system prompt
+                contents.push({
+                    role: 'user',
+                    parts: [{ text: `${systemPrompt}\n\nUser query: ${userMessage}` }]
+                });
+
                 const geminiRes = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ contents })
                 });
                 if (geminiRes.ok) {
                     const geminiData = await geminiRes.json();
@@ -1332,18 +1368,15 @@ const Chatbot = () => {
                 console.error("Gemini fallback error:", fallbackError);
             }
 
-            // Fallback 2: Offline keyword-based local responses if API key is invalid/offline
-            const query = userMessage.toLowerCase();
-            if (query.includes('dengue') || query.includes('मच्छर') || query.includes('ਮੱਛਰ')) {
-                return "Dengue alert is currently active in Patiala. Please ensure there is no stagnant water around your home, use mosquito nets, and wear full-sleeve clothing. If you have a high fever, rest and consult a doctor immediately.";
+            // Fallback 2: Offline keyword-based local responses with triage workflow triggering
+            if (queryLower.includes('dengue') || queryLower.includes('मच्छर') || queryLower.includes('ਮੱਛਰ') || queryLower.includes('fever') || queryLower.includes('बुखार') || queryLower.includes('ਬੁਖਾਰ')) {
+                setOfflineState({ step: 'awaiting_symptoms', query: queryLower });
+                return "I am currently operating in offline triage assistant mode.\n\nAre you experiencing any **severe warning signs** (like vomiting, bleeding gums, high fever over 103°F, severe stomach pain, or difficulty breathing)?\n\n**Please reply with YES or NO.**";
             }
-            if (query.includes('fever') || query.includes('बुखार') || query.includes('ਬੁਖਾਰ') || query.includes('cold') || query.includes('cough')) {
-                return "For mild fever or cough, make sure to get plenty of rest, stay hydrated by drinking clean boiled water, and monitor your temperature. If the fever lasts more than 3 days, please visit Govt. Rajindra Hospital or your nearest clinic.";
-            }
-            if (query.includes('diet') || query.includes('food') || query.includes('खाना') || query.includes('ਭੋਜਨ') || query.includes('nutrition')) {
+            if (queryLower.includes('diet') || queryLower.includes('food') || queryLower.includes('खाना') || queryLower.includes('ਭੋਜਨ') || queryLower.includes('nutrition')) {
                 return "A healthy diet for rural Punjab should include whole grains (missi roti, daliya), seasonal green vegetables, lentils (dal), and home-made curd or lassi. Try to limit oil, sugar, and tea intake.";
             }
-            if (query.includes('hello') || query.includes('hi') || query.includes('hey') || query.includes('sat sri akaal') || query.includes('namaste')) {
+            if (queryLower.includes('hello') || queryLower.includes('hi') || queryLower.includes('hey') || queryLower.includes('sat sri akaal') || queryLower.includes('namaste')) {
                 return "Sat Sri Akaal! I am SehatMitra, your health helper. How can I help you today?";
             }
 
@@ -1504,15 +1537,78 @@ const Chatbot = () => {
               {message.imageUrl && (
                   <img src={message.imageUrl} alt="User upload" className="rounded-lg mb-2 max-w-full h-auto" />
               )}
-              {/* Render Text Content */}
-              {message.content && (
-                <p
-                  className="text-sm"
-                  dangerouslySetInnerHTML={{
-                    __html: message.content.replace(/\n/g, '<br />'),
-                  }}
-                />
-              )}
+              {/* Render Text Content with Interactive Action Parser */}
+              {message.content && (() => {
+                  const hasViewHospitals = message.content.includes('[Action: ViewHospitals]');
+                  const hasViewAsha = message.content.includes('[Action: ViewAshaWorkers]');
+                  let cleanText = message.content
+                      .replace(/\[Action: ViewHospitals\]/g, '')
+                      .replace(/\[Action: ViewAshaWorkers\]/g, '')
+                      .trim();
+
+                  const lines = cleanText.split('\n');
+                  const elements = lines.map((line, idx) => {
+                      // Bold parsing: **text** -> <strong>text</strong>
+                      const boldRegex = /\*\*(.*?)\*\*/g;
+                      const parts = [];
+                      let lastIndex = 0;
+                      let match;
+                      while ((match = boldRegex.exec(line)) !== null) {
+                          if (match.index > lastIndex) {
+                              parts.push(line.substring(lastIndex, match.index));
+                          }
+                          parts.push(<strong key={match.index} className="font-bold text-gray-900 dark:text-white">{match[1]}</strong>);
+                          lastIndex = boldRegex.lastIndex;
+                      }
+                      if (lastIndex < line.length) {
+                          parts.push(line.substring(lastIndex));
+                      }
+
+                      const isBullet = line.trim().startsWith('*') || line.trim().startsWith('-');
+                      const bulletContent = isBullet ? line.replace(/^[\*\-\s]+/, '') : line;
+
+                      if (isBullet) {
+                          return (
+                              <li key={idx} className="ml-4 list-disc text-sm my-0.5">
+                                  {parts.length > 0 ? parts : bulletContent}
+                              </li>
+                          );
+                      }
+                      return (
+                          <p key={idx} className="text-sm my-1 leading-relaxed">
+                              {parts.length > 0 ? parts : line}
+                          </p>
+                      );
+                  });
+
+                  return (
+                      <div className="space-y-1">
+                          {elements}
+                          {(hasViewHospitals || hasViewAsha) && (
+                              <div className="flex flex-wrap gap-2 mt-3 pt-2 border-t border-gray-200/20">
+                                  {hasViewHospitals && (
+                                      <button
+                                          onClick={() => setCurrentView('hospitals')}
+                                          className="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow transition-all duration-300 transform active:scale-95"
+                                      >
+                                          <MapPin className="h-3.5 w-3.5 mr-1" />
+                                          Find Local Hospitals
+                                      </button>
+                                  )}
+                                  {hasViewAsha && (
+                                      <button
+                                          onClick={() => setCurrentView('asha')}
+                                          className="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg shadow transition-all duration-300 transform active:scale-95"
+                                      >
+                                          <Phone className="h-3.5 w-3.5 mr-1" />
+                                          ASHA Workers Directory
+                                      </button>
+                                  )}
+                              </div>
+                          )}
+                      </div>
+                  );
+              })()}
               {message.type === 'bot' && (
                 <button
                   onClick={() => speakMessage(message.content)}

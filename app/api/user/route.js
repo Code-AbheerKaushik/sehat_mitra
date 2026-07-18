@@ -54,7 +54,7 @@ export async function POST(request) {
     const user = await User.findOneAndUpdate(
       { email },
       { $set: updateData },
-      { upsert: true, new: true, setDefaultsOnInsert: true }
+      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
     ).lean();
 
     return Response.json({ user }, { status: 200 });
