@@ -700,7 +700,9 @@ const HealthcareApp = () => {
         }
     };
 
-  return (
+   const isChatView = currentView === 'chatbot';
+
+   return (
   <AppContext.Provider value={contextValue}>
     <AppStyles />
     {showWelcome && <WelcomeScreen />}
@@ -710,9 +712,19 @@ const HealthcareApp = () => {
       }`}
     >
       <div className="aurora-background"></div>
-      <div className="relative bg-gray-50/50 dark:bg-gray-900/50 h-screen flex flex-col overflow-hidden">
-        <Header />
-        <main className="flex-1 min-h-0 overflow-hidden">{renderContent()}</main>
+       <div
+         className={`relative bg-gray-50/50 dark:bg-gray-900/50 flex flex-col ${
+           isChatView ? 'h-dvh overflow-hidden' : 'min-h-dvh'
+         }`}
+       >
+         <Header />
+         <main
+           className={
+             isChatView ? 'flex-1 min-h-0 overflow-hidden' : 'flex-1 pb-24'
+           }
+         >
+           {renderContent()}
+         </main>
         <Navigation />
       </div>
     </div>
@@ -1487,8 +1499,8 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
 
     {/* Confirmation Modal */}
     {showClearConfirm && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 m-4 max-w-sm w-full">
+      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50 p-4 animate-fade-in">
+        <div className="max-h-full w-full max-w-sm overflow-y-auto rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             {t('clearChat')}
           </h3>
@@ -2206,7 +2218,13 @@ EditSelectRow.displayName = 'EditSelectRow';
   ];
 
   return (
-    <nav className="flex-shrink-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 z-50">
+    <nav
+      className={`${
+        currentView === 'chatbot'
+          ? 'flex-shrink-0'
+          : 'fixed inset-x-0 bottom-0'
+      } bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 z-50`}
+    >
       <div className="max-w-md mx-auto px-2">
         <div className="flex justify-around py-2">
           {navItems.map((item) => {
