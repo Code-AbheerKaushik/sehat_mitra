@@ -536,13 +536,16 @@ const HealthcareApp = () => {
 
     // Initialize Google Auth
     const initializeGoogleAuth = () => {
-        if (window.google) {
+        const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+        if (window.google && clientId) {
             window.google.accounts.id.initialize({
-                client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '1234567890-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com',
+                client_id: clientId,
                 callback: handleGoogleSignIn,
                 auto_select: false,
                 cancel_on_tap_outside: true
             });
+        } else if (!clientId) {
+            console.warn('Google sign-in is unavailable because NEXT_PUBLIC_GOOGLE_CLIENT_ID is not configured.');
         }
     };
 
@@ -1155,20 +1158,15 @@ const HealthTips = () => {
         User's Chronic Conditions: ${userProfile.conditions || 'None specified'}
         Generate 3 simple, actionable, and encouraging health tips tailored to this user. The tips should be easy to follow with limited resources. Focus on diet, light exercise, or lifestyle adjustments. The language must be extremely simple. Output only the tips in a numbered list, like "1. First tip.\n2. Second tip.\n3. Third tip.".`;
 
-        const apiKey = "AIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-        const payload = { contents: [{ parts: [{ text: systemPrompt }] }] };
-
       try {
-  const response = await fetch(apiUrl, {
+  const response = await fetch('/api/ai', {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ prompt: systemPrompt }),
   });
 
   const result = await response.json();
-  const candidate = result?.candidates?.[0];
-  const text = candidate?.content?.parts?.[0]?.text;
+  const text = result?.text;
 
   if (text) {
     const formattedTips = text
@@ -1310,7 +1308,11 @@ const Chatbot = () => {
         }
 
         try {
-            const response = await fetch(`https://parker-recipient-rebecca-fan.trycloudflare.com/chat`, {
+            const chatApiUrl = process.env.NEXT_PUBLIC_CHAT_API_URL;
+            if (!chatApiUrl) {
+                throw new Error('No external chat API is configured');
+            }
+            const response = await fetch(chatApiUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text: userMessage }),
@@ -1323,9 +1325,6 @@ const Chatbot = () => {
         } catch (error) {
             console.error("Error calling backend, trying fallback Gemini API:", error);
             try {
-                const apiKey = (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_GEMINI_API_KEY) || "AIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-                
                 // Prepend user profile information for personalized responses
                 const profileContext = `User Profile Context (inject this automatically into your logic):
 - Name: ${userProfile?.name || 'Anonymous User'}
@@ -1354,14 +1353,14 @@ If the user is asking for hospital options or medical aid, suggest Govt. Rajindr
                     parts: [{ text: `${systemPrompt}\n\nUser query: ${userMessage}` }]
                 });
 
-                const geminiRes = await fetch(apiUrl, {
+                const geminiRes = await fetch('/api/ai', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents })
                 });
                 if (geminiRes.ok) {
                     const geminiData = await geminiRes.json();
-                    const reply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    const reply = geminiData?.text;
                     if (reply) return reply;
                 }
             } catch (fallbackError) {
@@ -2650,22 +2649,10 @@ const DietPlanner = () => {
           Format: Use markdown headings for each meal (e.g., '### Breakfast'). For each meal, provide 2-3 simple food items.
           IMPORTANT: The entire response MUST be written in ${languageMap[language]}.`;
 
-      // Read API key from env; fallback to built-in key if not present
-      const apiKey = (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_GEMINI_API_KEY) || 'AIzaSyAFQzp0kxWTPRh7JNQkO6Ac2AmI2tnTp9g';
-
       try {
-        if (!apiKey) {
-          // Use local dummy plan
-          const text = buildDummyPlan();
-          setDietPlan(text);
-          return;
-        }
-
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-        const payload = { contents: [{ parts: [{ text: systemPrompt }] }] };
-        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const response = await fetch('/api/ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: systemPrompt }) });
         const result = await response.json();
-        const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const text = result?.text;
         if (text) setDietPlan(text); else throw new Error('Empty response');
       } catch (error) {
         console.error("Diet plan generation error:", error);

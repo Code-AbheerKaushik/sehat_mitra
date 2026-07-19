@@ -82,18 +82,28 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 Create a `.env.local` file in the root directory:
 
 ```env
+MONGODB_URI=your_mongodb_connection_string
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_oauth_client_id
-NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
-NEXT_PUBLIC_API_URL=http://localhost:8080
+GEMINI_API_KEY=your_gemini_api_key
+NEXT_PUBLIC_CHAT_API_URL=https://your-chat-api.example.com/chat
 ```
 
-### Backend Setup
-The chatbot connects to a backend API for LLM inference:
+Copy `.env.example` to `.env.local` to get started. Never commit real credentials.
 
-```bash
-# Backend runs on port 8080
-# Make sure it's configured in env variables
-```
+## Deployment
+
+This repository is one Next.js application: its frontend and database API routes deploy together on Vercel. You do not need Render.
+
+### Vercel
+
+1. Push the repository to GitHub and import it in Vercel.
+2. Keep the project root as the repository root; Vercel detects Next.js automatically.
+3. Add `MONGODB_URI`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, and, if used, `GEMINI_API_KEY` and `NEXT_PUBLIC_CHAT_API_URL` under **Settings → Environment Variables**.
+4. Deploy. The included `vercel.json` uses `npm run build`.
+
+For MongoDB Atlas, allow network access from Vercel and use a database user with only the permissions this app needs.
+
+The database endpoints (`/api/user`, `/api/chat`, `/api/hospitals`, and others) are included in the Vercel deployment. Gemini-powered features use the server-only `GEMINI_API_KEY`; do not use a `NEXT_PUBLIC_GEMINI_API_KEY`. `NEXT_PUBLIC_CHAT_API_URL` is only needed if you separately operate an external AI chat service; without it, the app calls its built-in Gemini route, or uses offline responses when no Gemini key is configured.
 
 ## 📱 Key Pages & Components
 
